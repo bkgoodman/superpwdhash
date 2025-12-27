@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4a6fa5">
+    <meta name="description" content="SuperPWDHash - A secure password hashing tool">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>SuperPWDHash</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.svg">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SuperPWDHash</h1>
+            <p class="subtitle">Secure Password Hasher</p>
+        </header>
+
+        <div class="input-group">
+            <label for="realm">Site / Realm:</label>
+            <input type="text" id="realm" placeholder="example.com" autocomplete="off" inputmode="url">
+        </div>
+        
+        <div class="input-group">
+            <label for="password">Password:</label>
+            <div class="input-with-button">
+                <input type="password" id="password" placeholder="Enter your password" autocomplete="off">
+                <button id="togglePassword" class="icon-button">👁️</button>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button id="generateHash" class="primary">Generate Hash</button>
+            <button id="copyHash" class="secondary" disabled>Copy Hash</button>
+        </div>
+        
+        <div class="result">
+            <label>Your Hashed Password:</label>
+            <div class="hash-display" id="hashOutput">Hash will appear here...</div>
+        </div>
+        
+        <div class="info">
+            <p>🔒 Your password is hashed in your browser and never leaves your device.</p>
+            <p>ℹ️ Use a unique realm (usually the site domain) to get unique passwords per site.</p>
+        </div>
+    </div>
+    
+    <script src="prefix.js"></script>
+    <script src="md5.js"></script>
+    <script src="hashed-password.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
