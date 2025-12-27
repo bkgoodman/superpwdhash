@@ -1,4 +1,4 @@
-const CACHE_NAME = 'superpwdhash-v4';
+const CACHE_NAME = 'superpwdhash-v5';
 
 const ASSETS = [
   './',

@@ -20,34 +20,50 @@
         </header>
 
         <div class="input-group">
-            <label for="realm">Site / Realm:</label>
-            <input type="text" id="realm" placeholder="example.com" autocomplete="off" inputmode="url">
-        </div>
-        
-        <div class="input-group">
-            <label for="password">Password:</label>
+            <label for="password">Master Password:</label>
             <div class="input-with-button">
-                <input type="password" id="password" placeholder="Enter your password" autocomplete="off">
+                <input type="password" id="password" placeholder="Enter your master password" autocomplete="off">
                 <button id="togglePassword" class="icon-button">👁️</button>
             </div>
         </div>
 
-        <div class="button-group">
-            <button id="generateHash" class="primary">Generate Hash</button>
-            <button id="copyHash" class="secondary" disabled>Copy Hash</button>
+        <div class="input-group">
+            <label for="newHost">Add New Site:</label>
+            <div class="input-with-button">
+                <input type="text" id="newHost" placeholder="example.com" autocomplete="off" inputmode="url">
+                <button id="addHost" class="icon-button add-btn">+</button>
+            </div>
         </div>
-        
-        <div class="result">
-            <label>Your Hashed Password:</label>
-            <div class="hash-display" id="hashOutput">Hash will appear here...</div>
+
+        <div class="host-list-section">
+            <label>Your Sites:</label>
+            <div class="host-list" id="hostList">
+                <p class="empty-message" id="emptyMessage">No sites saved yet. Add one above.</p>
+            </div>
         </div>
-        
+
         <div class="info">
-            <p>🔒 Your password is hashed in your browser and never leaves your device.</p>
-            <p>ℹ️ Use a unique realm (usually the site domain) to get unique passwords per site.</p>
+            <p>🔒 Your password is hashed locally and never leaves your device.</p>
         </div>
     </div>
-    
+
+    <!-- Modal for showing hashed password -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">example.com</span>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <label>Hashed Password:</label>
+                <div class="hash-display" id="hashOutput">...</div>
+            </div>
+            <div class="modal-footer">
+                <button id="copyHash" class="primary">Copy</button>
+            </div>
+        </div>
+    </div>
+
     <script src="prefix.js"></script>
     <script src="md5.js"></script>
     <script src="hashed-password.js"></script>

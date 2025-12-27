@@ -6,6 +6,7 @@
   --primary: #4a6fa5;
   --primary-2: #2f4d7a;
   --border: rgba(255,255,255,0.10);
+  --danger: #c0392b;
 }
 
 * { box-sizing: border-box; }
@@ -97,6 +98,14 @@ input:focus {
   margin: 12px 0;
 }
 
+.add-btn {
+  font-size: 22px;
+  font-weight: bold;
+  background: linear-gradient(180deg, var(--primary), var(--primary-2));
+  color: white;
+  border: none;
+}
+
 button {
   border: 0;
   border-radius: 14px;
@@ -143,6 +152,154 @@ button:disabled {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.45;
+}
+
+/* Host list */
+.host-list-section {
+  margin-top: 16px;
+}
+
+.host-list-section > label {
+  margin-bottom: 10px;
+}
+
+.host-list {
+  max-height: 45vh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(0,0,0,0.15);
+}
+
+.empty-message {
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+.host-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.host-item:last-child {
+  border-bottom: none;
+}
+
+.host-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.host-item:active {
+  background: rgba(74,111,165,0.25);
+}
+
+.host-name {
+  font-size: 15px;
+  color: var(--text);
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 18px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.delete-btn:hover {
+  color: var(--danger);
+  background: rgba(192,57,43,0.15);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  width: 90%;
+  max-width: 360px;
+  padding: 0;
+  transform: scale(0.95);
+  transition: transform 0.2s;
+}
+
+.modal-overlay.active .modal {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.modal-close:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+}
+
+.modal-body {
+  padding: 18px;
+}
+
+.modal-body .hash-display {
+  margin-top: 10px;
+  user-select: all;
+}
+
+.modal-footer {
+  padding: 0 18px 18px;
+}
+
+.modal-footer .primary {
+  width: 100%;
 }
 
 @media (max-width: 420px) {
