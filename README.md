@@ -2,6 +2,8 @@
 
 Based off of work from [Stanford](https://crypto.stanford.edu/pwdhash/RemotePwdHash0.8/) and [Alex King](http://alexking.org)
 
+**Try this live** at: [https://auth.makeitlabs.com/misc/superpwdhash/](https://auth.makeitlabs.com/misc/superpwdhash/)
+
 ## Features
 
 - **Client-side password hashing** using SPH_HashedPassword algorithm
@@ -10,9 +12,9 @@ Based off of work from [Stanford](https://crypto.stanford.edu/pwdhash/RemotePwdH
 - **Local storage only** - Bookmarks and data saved on device
 - **No server communication** - Passwords never leave your device
 
-## WebAuthn PRF Biometric Storage (NEW)
+## WebAuthn PRF Biometric Storage
 
-SuperPWDHash now supports optional biometric storage of your master password using **WebAuthn PRF (Pseudo-Random Function)** - a cutting-edge approach to secure local password management.
+SuperPWDHash now supports optional biometric storage of your master password using **WebAuthn PRF (Pseudo-Random Function)** - a cutting-edge approach to secure local password management. 
 
 ### How It Works
 
@@ -28,6 +30,8 @@ SuperPWDHash now supports optional biometric storage of your master password usi
    - PRF generates the same deterministic key from the authentication
    - Key decrypts your master password locally
    - Password is filled in automatically
+
+Note that Biometric support requires HTTPS. So you can use tool from any web page, Webauthn will only work on devices which support it (modern phones generally do, but desktop browsers not-so-much), and only with HTTPS.
 
 ### Security Benefits
 
