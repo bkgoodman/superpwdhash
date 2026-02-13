@@ -27,6 +27,29 @@
             </div>
         </div>
 
+        <div class="webauthn-section">
+            <div class="webauthn-toggle-group">
+                <label class="toggle-label">
+                    <input type="checkbox" id="webauthnEnabled">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">Enable biometric password storage</span>
+                </label>
+            </div>
+
+            <div class="webauthn-controls" id="webauthnControls" style="display: none;">
+                <div class="webauthn-status" id="webauthnStatus">
+                    <span class="status-indicator" id="statusIndicator"></span>
+                    <span class="status-text" id="statusText">Not enrolled</span>
+                </div>
+                
+                <div class="webauthn-buttons">
+                    <button id="webauthnEnroll" class="secondary-btn">Setup Biometrics</button>
+                    <button id="webauthnUnlock" class="primary-btn" style="display: none;">Unlock with Biometrics</button>
+                    <button id="webauthnReset" class="danger-btn" style="display: none;">Reset Biometrics</button>
+                </div>
+            </div>
+        </div>
+
         <div class="input-group">
             <label for="newHost">Add New Site:</label>
             <div class="input-with-button">
