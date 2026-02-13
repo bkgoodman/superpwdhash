@@ -393,90 +393,50 @@
   function updateWebAuthnUI() {
     // Ensure elements exist before trying to use them
     if (!webauthnEnabledEl || !webauthnControlsEl) {
-      console.log('WebAuthn elements not found');
       return;
     }
 
     // Check if WebAuthn is supported at all
-    const hasNavigator = !!window.navigator;
-    const hasCredentials = hasNavigator && !!window.navigator.credentials;
-    const hasCreate = hasCredentials && !!window.navigator.credentials.create;
-    const hasGet = hasCredentials && !!window.navigator.credentials.get;
-    const hasPublicKeyCredential = !!window.PublicKeyCredential;
-    
-    const webAuthnSupported = hasNavigator && hasCredentials && hasCreate && hasGet && hasPublicKeyCredential;
-
-    console.log('WebAuthn support detection:', {
-      hasNavigator,
-      hasCredentials,
-      hasCreate,
-      hasGet,
-      hasPublicKeyCredential,
-      webAuthnSupported
-    });
-
-    console.log('WebAuthn supported value:', webAuthnSupported);
-
-    // Always show stored credentials if they exist, even if WebAuthn isn't currently supported
-    // This allows users to see their enrollment status across devices
-    if (webauthnData && webauthnData.enrolled) {
-      console.log('Found stored credentials, showing enrollment status');
-      webauthnEnabledEl.checked = true;
-      webauthnEnabledEl.disabled = !webAuthnSupported; // Disable if not supported
-      statusIndicatorEl.className = 'status-indicator enrolled';
-      statusTextEl.textContent = webAuthnSupported ? 'Enrolled' : 'Enrolled (WebAuthn not available on this device)';
-      webauthnEnrollEl.style.display = 'none';
-      webauthnUnlockEl.style.display = webAuthnSupported ? 'inline-block' : 'none';
-      webauthnResetEl.style.display = 'inline-block';
-      webauthnControlsEl.style.display = 'block';
-      return;
-    }
+    const webAuthnSupported = window.navigator && 
+                             window.navigator.credentials && 
+                             window.navigator.credentials.create &&
+                             window.navigator.credentials.get &&
+                             window.PublicKeyCredential;
 
     if (!webAuthnSupported) {
       // Hide the entire WebAuthn section if not supported
       webauthnControlsEl.style.display = 'none';
       webauthnEnabledEl.disabled = true;
       webauthnEnabledEl.checked = false;
-      
-      // Add helpful message about requirements
-      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const isHttps = window.location.protocol === 'https:';
-      const isFile = window.location.protocol === 'file:';
-      
-      let reason = '';
-      if (isFile) {
-        reason = 'WebAuthn requires HTTPS or localhost. Opening the file directly (file://) is not supported.';
-      } else if (!isHttps && !isLocalhost) {
-        reason = 'WebAuthn requires HTTPS or localhost. Current connection is not secure.';
-      } else if (!hasPublicKeyCredential) {
-        reason = 'WebAuthn is not supported in this browser. Please use a modern browser like Chrome, Firefox, Safari, or Edge.';
-      } else {
-        reason = 'WebAuthn is not available in this environment.';
-      }
-      
-      console.log('WebAuthn not supported:', reason);
       return;
     }
 
-    console.log('WebAuthn supported, enabling toggle');
     webauthnEnabledEl.disabled = false;
 
     // If we have stored credentials, turn the toggle on by default
-    console.log('Checking stored credentials:', webauthnData);
     if (webauthnData && webauthnData.enrolled) {
-      console.log('Found stored credentials, enabling toggle');
       webauthnEnabledEl.checked = true;
+    }
+
+    if (!webauthnEnabledEl.checked) {
+      webauthnControlsEl.style.display = 'none';
+      return;
+    }
+
+    webauthnControlsEl.style.display = 'block';
+
+    if (webauthnData && webauthnData.enrolled) {
       statusIndicatorEl.className = 'status-indicator enrolled';
       statusTextEl.textContent = 'Enrolled';
       webauthnEnrollEl.style.display = 'none';
       webauthnUnlockEl.style.display = 'inline-block';
       webauthnResetEl.style.display = 'inline-block';
-      webauthnControlsEl.style.display = 'block';
     } else {
-      console.log('No stored credentials found, keeping toggle off');
-      // If no stored credentials, keep toggle off by default
-      webauthnEnabledEl.checked = false;
-      webauthnControlsEl.style.display = 'none';
+      statusIndicatorEl.className = 'status-indicator not-enrolled';
+      statusTextEl.textContent = 'Not enrolled';
+      webauthnEnrollEl.style.display = 'inline-block';
+      webauthnUnlockEl.style.display = 'none';
+      webauthnResetEl.style.display = 'none';
     }
   }
 
@@ -548,17 +508,8 @@
   loadWebAuthnData();
   renderHosts();
   
-  // Debug: Check if elements exist immediately
-  console.log('WebAuthn elements check:', {
-    webauthnEnabled: !!webauthnEnabledEl,
-    webauthnControls: !!webauthnControlsEl,
-    statusIndicator: !!statusIndicatorEl,
-    statusText: !!statusTextEl
-  });
-  
   // Delay WebAuthn UI update to ensure DOM is ready
   setTimeout(() => {
-    console.log('Running delayed WebAuthn UI update');
     updateWebAuthnUI();
   }, 100);
 
