@@ -415,6 +415,23 @@
       webAuthnSupported
     });
 
+    console.log('WebAuthn supported value:', webAuthnSupported);
+
+    // Always show stored credentials if they exist, even if WebAuthn isn't currently supported
+    // This allows users to see their enrollment status across devices
+    if (webauthnData && webauthnData.enrolled) {
+      console.log('Found stored credentials, showing enrollment status');
+      webauthnEnabledEl.checked = true;
+      webauthnEnabledEl.disabled = !webAuthnSupported; // Disable if not supported
+      statusIndicatorEl.className = 'status-indicator enrolled';
+      statusTextEl.textContent = webAuthnSupported ? 'Enrolled' : 'Enrolled (WebAuthn not available on this device)';
+      webauthnEnrollEl.style.display = 'none';
+      webauthnUnlockEl.style.display = webAuthnSupported ? 'inline-block' : 'none';
+      webauthnResetEl.style.display = 'inline-block';
+      webauthnControlsEl.style.display = 'block';
+      return;
+    }
+
     if (!webAuthnSupported) {
       // Hide the entire WebAuthn section if not supported
       webauthnControlsEl.style.display = 'none';
@@ -445,7 +462,9 @@
     webauthnEnabledEl.disabled = false;
 
     // If we have stored credentials, turn the toggle on by default
+    console.log('Checking stored credentials:', webauthnData);
     if (webauthnData && webauthnData.enrolled) {
+      console.log('Found stored credentials, enabling toggle');
       webauthnEnabledEl.checked = true;
       statusIndicatorEl.className = 'status-indicator enrolled';
       statusTextEl.textContent = 'Enrolled';
@@ -454,6 +473,7 @@
       webauthnResetEl.style.display = 'inline-block';
       webauthnControlsEl.style.display = 'block';
     } else {
+      console.log('No stored credentials found, keeping toggle off');
       // If no stored credentials, keep toggle off by default
       webauthnEnabledEl.checked = false;
       webauthnControlsEl.style.display = 'none';
