@@ -1,15 +1,20 @@
 # SuperPWDHash - Mobile Phone Applet
 
+- Mobile-friendly password hasher with biometric encryption support. 
+- All on-device storage - nothing sent or stored on cloud
+- URLs (cleartext) are stored on device
+- Master password not stored anywhere - but can optionally store biometric-secured encrypted master password
+
 Based off of work from [Stanford](https://crypto.stanford.edu/pwdhash/RemotePwdHash0.8/) and [Alex King](http://alexking.org)
 
-**Try this live** at: [https://auth.makeitlabs.com/misc/superpwdhash/](https://auth.makeitlabs.com/misc/superpwdhash/)
+[Try it Live](https://bkgoodman.github.io/superpwdhash/)
 
 ## Features
 
 - **Client-side password hashing** using SPH_HashedPassword algorithm
 - **Offline PWA** - Works without internet connection once cached
 - **Biometric master password storage** (optional) using WebAuthn PRF
-- **Local storage only** - Bookmarks and data saved on device
+- **Local storage only** - Bookmarks and data saved on device (Save as bookmark, or to home screen!)
 - **No server communication** - Passwords never leave your device
 
 ## WebAuthn PRF Biometric Storage
