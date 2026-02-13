@@ -264,27 +264,6 @@
         alert('No platform authenticator (biometric) available on this device. This feature requires fingerprint, face ID, or similar biometric capabilities.');
         return;
       }
-
-      // Check if PRF extension is supported
-      const testCredential = await navigator.credentials.create({
-        publicKey: {
-          challenge: new Uint8Array(32),
-          rp: { name: 'Test', id: window.location.hostname },
-          user: { id: new Uint8Array(16), name: 'test', displayName: 'Test' },
-          pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
-          authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
-          extensions: { prf: { eval: { first: new Uint8Array(32) } } }
-        }
-      }).catch(() => null);
-
-      const hasPRFSupport = testCredential && 
-                           testCredential.getClientExtensionResults && 
-                           testCredential.getClientExtensionResults().prf;
-
-      if (!hasPRFSupport) {
-        alert('WebAuthn PRF (Pseudo-Random Function) is not supported on this platform/browser. This feature is currently available on:\n\n• iOS Safari with Face ID/Touch ID\n• Android Chrome with fingerprint/face unlock\n• Some modern laptops with Windows Hello\n\nYou can continue using manual password entry, which works perfectly on all devices.');
-        return;
-      }
       const seed = await generateRandomSeed();
       
       const challenge = crypto.getRandomValues(new Uint8Array(32));
