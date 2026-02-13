@@ -264,6 +264,27 @@
         alert('No platform authenticator (biometric) available on this device. This feature requires fingerprint, face ID, or similar biometric capabilities.');
         return;
       }
+
+      // Check if PRF extension is supported
+      const testCredential = await navigator.credentials.create({
+        publicKey: {
+          challenge: new Uint8Array(32),
+          rp: { name: 'Test', id: window.location.hostname },
+          user: { id: new Uint8Array(16), name: 'test', displayName: 'Test' },
+          pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+          authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
+          extensions: { prf: { eval: { first: new Uint8Array(32) } } }
+        }
+      }).catch(() => null);
+
+      const hasPRFSupport = testCredential && 
+                           testCredential.getClientExtensionResults && 
+                           testCredential.getClientExtensionResults().prf;
+
+      if (!hasPRFSupport) {
+        alert('WebAuthn PRF (Pseudo-Random Function) is not supported on this platform/browser. This feature is currently available on:\n\n• iOS Safari with Face ID/Touch ID\n• Android Chrome with fingerprint/face unlock\n• Some modern laptops with Windows Hello\n\nYou can continue using manual password entry, which works perfectly on all devices.');
+        return;
+      }
       const seed = await generateRandomSeed();
       
       const challenge = crypto.getRandomValues(new Uint8Array(32));
@@ -280,7 +301,10 @@
             name: 'superpwdhash-user',
             displayName: 'SuperPWDHash User'
           },
-          pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+          pubKeyCredParams: [
+            { alg: -7, type: 'public-key' },  // ES256
+            { alg: -257, type: 'public-key' } // RS256
+          ],
           authenticatorSelection: {
             authenticatorAttachment: 'platform',
             userVerification: 'required'
@@ -441,25 +465,19 @@
     console.log('WebAuthn supported, enabling toggle');
     webauthnEnabledEl.disabled = false;
 
-    if (!webauthnEnabledEl.checked) {
-      webauthnControlsEl.style.display = 'none';
-      return;
-    }
-
-    webauthnControlsEl.style.display = 'block';
-
+    // If we have stored credentials, turn the toggle on by default
     if (webauthnData && webauthnData.enrolled) {
+      webauthnEnabledEl.checked = true;
       statusIndicatorEl.className = 'status-indicator enrolled';
       statusTextEl.textContent = 'Enrolled';
       webauthnEnrollEl.style.display = 'none';
       webauthnUnlockEl.style.display = 'inline-block';
       webauthnResetEl.style.display = 'inline-block';
+      webauthnControlsEl.style.display = 'block';
     } else {
-      statusIndicatorEl.className = 'status-indicator not-enrolled';
-      statusTextEl.textContent = 'Not enrolled';
-      webauthnEnrollEl.style.display = 'inline-block';
-      webauthnUnlockEl.style.display = 'none';
-      webauthnResetEl.style.display = 'none';
+      // If no stored credentials, keep toggle off by default
+      webauthnEnabledEl.checked = false;
+      webauthnControlsEl.style.display = 'none';
     }
   }
 
